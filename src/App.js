@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import PropTypes from 'prop-types'
+
+import items from './components/Items'
+
+const Movie = ({title, url, thumbnailUrl, rating}) => {
+
+    return (
+        <div style={{display: "block"}}>
+            <img src={url} alt={title} style={{width: "100px"}}/>
+            <p>{title}</p>
+            <a href={thumbnailUrl}>Link</a>
+            <p>{rating} / 5.0</p>
+        </div>
+    )
+}
+
+Movie.prototype = {
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    thumbnailUrl: PropTypes.string,
+    rating: PropTypes.number
+}
+
+const RenderItems = () => items.map(item => <Movie key={item.id} {...item}/>)
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    return (
+        <div>
+            <RenderItems/>
+        </div>
+    );
 }
 
 export default App;
