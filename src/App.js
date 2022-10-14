@@ -1,35 +1,51 @@
-import PropTypes from 'prop-types'
+import React from "react";
+import axios from "axios";
+import {RotatingLines} from 'react-loader-spinner'
 
-import items from './components/Items'
+import Movies from "./components/Movies";
+import './App.css'
 
-const Movie = ({title, url, thumbnailUrl, rating}) => {
+const URL_MOVIES = 'https://yts.mx/api/v2/list_movies.json?sort_by=rating'
 
-    return (
-        <div style={{display: "block"}}>
-            <img src={url} alt={title} style={{width: "100px"}}/>
-            <p>{title}</p>
-            <a href={thumbnailUrl}>Link</a>
-            <p>{rating} / 5.0</p>
-        </div>
-    )
-}
+class App extends React.Component {
 
-Movie.prototype = {
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    thumbnailUrl: PropTypes.string,
-    rating: PropTypes.number
-}
+    state = {
+        isLoading: true,
+        movies: []
+    }
 
-const RenderItems = () => items.map(item => <Movie key={item.id} {...item}/>)
+    getMovies = async () => {
+        const {data: {data: {movies}}} = await axios(URL_MOVIES)
 
-function App() {
+        return movies
+    }
 
-    return (
-        <div>
-            <RenderItems/>
-        </div>
-    );
+    componentDidMount() {
+        this.getMovies().then(movies => {
+            this.setState({movies, isLoading: false})
+        })
+    }
+
+
+    render() {
+        const {isLoading, movies} = this.state
+
+        return (
+            <section className="container">
+                {isLoading
+                    ? (<div className="loader">
+                        <RotatingLines
+                            strokeColor="grey"
+                            strokeWidth="5"
+                            animationDuration="0.75"
+                            width="96"
+                            visible={true}
+                        />
+                    </div>)
+                    : <Movies movies={movies}/>}
+            </section>
+        )
+    }
 }
 
 export default App;
