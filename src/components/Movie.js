@@ -21,7 +21,7 @@ Movie.propTypes = {
     year: propTypes.number.isRequired,
     title: propTypes.string.isRequired,
     summary: propTypes.string.isRequired,
-    poster: propTypes.string.isRequired, //medium_cover_image
+    poster: propTypes.string.isRequired,
     url: propTypes.string.isRequired,
     genres: propTypes.arrayOf(propTypes.string).isRequired
 }
